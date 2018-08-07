@@ -10,7 +10,8 @@
         <tr v-for='(animal,index) in animals' :key='index'>
             <td>{{animal.vrsta}}</td>
             <td>{{animal.ime}}</td> 
-            <td>{{animal. datum_rodjenja}}</td> 
+            <td v-if="animal.datum_rodjenja != ''">{{animal.datum_rodjenja}}</td> 
+            <td v-else>Nepoznato</td> 
         </tr>
 </table>
   </div>
@@ -26,7 +27,7 @@ export default {
             {
                 vrsta:'predator',
                 ime: 'Tigar',
-                datum_rodjenja: '5. jun 2015'
+                datum_rodjenja: ''
             },
             {
                 vrsta:'Predator',
@@ -41,7 +42,7 @@ export default {
             {
                 vrsta:'vodeni sisar',
                 ime: 'Foka',
-                datum_rodjenja: '5. jun 2010'
+                datum_rodjenja: ''
             },
             {
                 vrsta:'papkar',
