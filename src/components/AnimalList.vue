@@ -12,7 +12,10 @@
          <label>Datum rodjenja: </label><br>
         <input type="text" v-model='newAnimal.datum_rodjenja'>
         <br>
+
+        <br>
         <select v-model="newAnimal.sector">
+       
         <option disabled value="">Please select one sector</option>
               <option v-for='(sector, index) in sectors' :key='index' v-bind:value='sector'>{{sector.name}}</option>
   
@@ -30,7 +33,7 @@
             <th></th>
             <th></th>
         </tr>
-        <tr v-for='(animal,index) in animals' :key='index'>
+        <tr v-bind:class="{backgroundColor: isActive(animal)}" v-for='(animal,index) in animals' :key='index'>
             <td>{{animal.vrsta}}</td>
             <td>{{animal.ime}}</td> 
             <td >{{animal.datum_rodjenja ? animal.datum_rodjenja : 'Nepoznato'}}</td> 
@@ -38,29 +41,23 @@
 
             <td><button @click='removeAnimal(animal)'>Remove</button></td>
             <td><button @click='moveToTop(animal)'>Move to top</button></td>
+            <td><button @click='toggle(animal)'>Toggle background</button></td>
         </tr>
     </table>
  
   
-    <h1>Sectors </h1>
-    <table>
-        <tr>
-            <th>Sectors</th>
-            <th></th>
-        </tr>
-        <tr v-for='(sector, index) in sectors' :key='index'>
-            <td>{{sector.name}}</td>
-        
-            <td><button @click='showAnimals(sector)'>Show animals</button></td>
-            
-        </tr>
-    </table>
-  
-
-
-
-</div>
-
+        <h1>Sectors </h1>
+        <table>
+            <tr>
+                <th>Sectors</th>
+                <th></th>
+            </tr>
+            <tr v-for='(sector, index) in sectors' :key='index'>
+                <td>{{sector.name}}</td>
+                <td><button @click='showAnimals(sector)'>Show animals</button></td>
+            </tr>
+        </table>
+  </div>
 
 </template>
 
@@ -84,35 +81,41 @@ export default {
                 vrsta:'predator',
                 ime: 'Tigar',
                 datum_rodjenja: '', 
-                sector: sectors[0] 
+                sector: sectors[0],
+                background: true,
                             
             },
             {
                 vrsta:'predator',
                 ime: 'Panter',
                 datum_rodjenja: '5. jun 2005',
-                sector: sectors[0] 
+                sector: sectors[0],
+                background: true,
             },
             {
                 vrsta:'zver',
                 ime: 'Medved',
                 datum_rodjenja: '15. april 1995',
-                  sector: sectors[0] 
+                sector: sectors[0],
+                background: false,
             },
             {
                 vrsta:'vodozemci',
                 ime: 'Foka',
                 datum_rodjenja: '',
-                     sector: sectors[1] 
+                sector: sectors[1],
+                background: true,
             },
             {
                 vrsta:'papkar',
                 ime: 'Kamila',
                 datum_rodjenja: '3. maj 2000',  
-                    sector: sectors[2] 
+                sector: sectors[2],
+                background: true,
             },
         ],  
-        newAnimal: {}
+        newAnimal: {},
+    
     }
   },
 
@@ -139,11 +142,16 @@ export default {
                   list.push(animal.ime);
               }
           });
-        
           alert(list);
-
-          
       },
+
+      isActive(animal) {
+         return  animal.background;
+      },
+
+      toggle(animal) {
+          animal.background = !animal.background;
+      }
   }
 }
 </script>
@@ -164,4 +172,9 @@ input {
     margin: 8px 0;
     box-sizing: border-box;
 }
+
+.backgroundColor {
+    background: lightgreen;
+}
+
 </style>
