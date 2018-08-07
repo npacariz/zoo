@@ -40,24 +40,39 @@
             <td><button @click='moveToTop(animal)'>Move to top</button></td>
         </tr>
     </table>
-  </div>
+ 
+  
+    <h1>Sectors </h1>
+    <table>
+        <tr>
+            <th>Sectors</th>
+            <th></th>
+        </tr>
+        <tr v-for='(sector, index) in sectors' :key='index'>
+            <td>{{sector.name}}</td>
+        
+            <td><button @click='showAnimals(sector)'>Show animals</button></td>
+            
+        </tr>
+    </table>
+  
+
+
+
+</div>
+
+
 </template>
 
 <script>
  const sectors = [
-            { name:'kavez'},
-        
+            {name:'kavez'},
             {name:'bazen'},
-            { name:'livada'}
+            {name:'livada'}
         ]
 
-
-
 export default {
-  name: 'AnimalList',
-
-
-  
+  name: 'AnimalList',  
   data() {
 
     return {
@@ -96,10 +111,7 @@ export default {
                 datum_rodjenja: '3. maj 2000',  
                     sector: sectors[2] 
             },
-        ],
-
-     
-       
+        ],  
         newAnimal: {}
     }
   },
@@ -119,8 +131,19 @@ export default {
           this.animals.push(this.newAnimal);
           this.newAnimal = {};
 
-          console.log(newAnimal)
-      }
+      },
+      showAnimals(sector) {
+          var list = [];
+          this.animals.forEach(animal => {
+              if(animal.sector === sector){
+                  list.push(animal.ime);
+              }
+          });
+        
+          alert(list);
+
+          
+      },
   }
 }
 </script>
