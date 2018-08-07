@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>Animal List</h1>
-
+    
     <form @submit.prevent>
         <label>Vrsta: </label><br>
         <input type="text" v-model='newAnimal.vrsta'>
@@ -12,6 +12,12 @@
          <label>Datum rodjenja: </label><br>
         <input type="text" v-model='newAnimal.datum_rodjenja'>
         <br>
+        <select v-model="newAnimal.sector">
+        <option disabled value="">Please select one sector</option>
+              <option v-for='(sector, index) in sectors' :key='index' v-bind:value='sector'>{{sector.name}}</option>
+  
+        </select>
+
         <button @click='addAnimal'>Add Animal</button>
     </form>
 
@@ -20,6 +26,7 @@
             <th>Vrsta</th>
             <th>Ime</th> 
             <th>Datum rodjenja</th>
+            <th>Sector:</th>
             <th></th>
             <th></th>
         </tr>
@@ -27,6 +34,7 @@
             <td>{{animal.vrsta}}</td>
             <td>{{animal.ime}}</td> 
             <td >{{animal.datum_rodjenja ? animal.datum_rodjenja : 'Nepoznato'}}</td> 
+            <td>{{animal.sector.name}}</td>
 
             <td><button @click='removeAnimal(animal)'>Remove</button></td>
             <td><button @click='moveToTop(animal)'>Move to top</button></td>
@@ -36,39 +44,62 @@
 </template>
 
 <script>
+ const sectors = [
+            { name:'kavez'},
+        
+            {name:'bazen'},
+            { name:'livada'}
+        ]
+
+
+
 export default {
   name: 'AnimalList',
+
+
   
   data() {
+
     return {
+    
+    sectors: sectors,
+
         animals: [
             {
                 vrsta:'predator',
                 ime: 'Tigar',
-                datum_rodjenja: ''
+                datum_rodjenja: '', 
+                sector: sectors[0] 
+                            
             },
             {
-                vrsta:'Predator',
+                vrsta:'predator',
                 ime: 'Panter',
-                datum_rodjenja: '5. jun 2005'
+                datum_rodjenja: '5. jun 2005',
+                sector: sectors[0] 
             },
             {
                 vrsta:'zver',
                 ime: 'Medved',
-                datum_rodjenja: '15. april 1995'
+                datum_rodjenja: '15. april 1995',
+                  sector: sectors[0] 
             },
             {
-                vrsta:'vodeni sisar',
+                vrsta:'vodozemci',
                 ime: 'Foka',
-                datum_rodjenja: ''
+                datum_rodjenja: '',
+                     sector: sectors[1] 
             },
             {
                 vrsta:'papkar',
                 ime: 'Kamila',
-                datum_rodjenja: '3. maj 2000'
+                datum_rodjenja: '3. maj 2000',  
+                    sector: sectors[2] 
             },
         ],
 
+     
+       
         newAnimal: {}
     }
   },
@@ -79,13 +110,16 @@ export default {
           this.animals.splice(animalIndex, 1)
       },
       moveToTop(animal) {
-          let animalIndex = this.animals.indexOf(animal);
-          this.animals.splice(animalIndex, 1)
-          this.animals.splice(0, 0, animal)
+
+          this.removeAnimal(animal)
+          this.animals.unshift(animal)
       },
       addAnimal() {
+        
           this.animals.push(this.newAnimal);
           this.newAnimal = {};
+
+          console.log(newAnimal)
       }
   }
 }
