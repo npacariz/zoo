@@ -1,7 +1,21 @@
 <template>
   <div class="hello">
     <h1>Animal List</h1>
-   <table>
+
+    <form @submit.prevent>
+        <label>Vrsta: </label><br>
+        <input type="text" v-model='newAnimal.vrsta'>
+        <br>
+        <label>Ime: </label><br>
+        <input type="text" v-model='newAnimal.ime'>
+        <br>
+         <label>Datum rodjenja: </label><br>
+        <input type="text" v-model='newAnimal.datum_rodjenja'>
+        <br>
+        <button @click='addAnimal'>Add Animal</button>
+    </form>
+
+    <table>
         <tr>
             <th>Vrsta</th>
             <th>Ime</th> 
@@ -12,12 +26,12 @@
         <tr v-for='(animal,index) in animals' :key='index'>
             <td>{{animal.vrsta}}</td>
             <td>{{animal.ime}}</td> 
-            <td v-if="animal.datum_rodjenja != ''">{{animal.datum_rodjenja}}</td> 
-            <td v-else>Nepoznato</td> 
+            <td >{{animal.datum_rodjenja ? animal.datum_rodjenja : 'Nepoznato'}}</td> 
+
             <td><button @click='removeAnimal(animal)'>Remove</button></td>
             <td><button @click='moveToTop(animal)'>Move to top</button></td>
         </tr>
-</table>
+    </table>
   </div>
 </template>
 
@@ -53,7 +67,9 @@ export default {
                 ime: 'Kamila',
                 datum_rodjenja: '3. maj 2000'
             },
-        ]
+        ],
+
+        newAnimal: {}
     }
   },
 
@@ -66,6 +82,10 @@ export default {
           let animalIndex = this.animals.indexOf(animal);
           this.animals.splice(animalIndex, 1)
           this.animals.splice(0, 0, animal)
+      },
+      addAnimal() {
+          this.animals.push(this.newAnimal);
+          this.newAnimal = {};
       }
   }
 }
@@ -79,5 +99,12 @@ table {
 th, td {
     padding: 15px;
     text-align: left;
+}
+
+input {
+    width: 60%;
+    padding: 12px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
 }
 </style>
