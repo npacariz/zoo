@@ -7,6 +7,7 @@
             <th>Ime</th> 
             <th>Datum rodjenja</th>
             <th></th>
+            <th></th>
         </tr>
         <tr v-for='(animal,index) in animals' :key='index'>
             <td>{{animal.vrsta}}</td>
@@ -14,6 +15,7 @@
             <td v-if="animal.datum_rodjenja != ''">{{animal.datum_rodjenja}}</td> 
             <td v-else>Nepoznato</td> 
             <td><button @click='removeAnimal(animal)'>Remove</button></td>
+            <td><button @click='moveToTop(animal)'>Move to top</button></td>
         </tr>
 </table>
   </div>
@@ -59,6 +61,11 @@ export default {
       removeAnimal(animal) {
           let animalIndex = this.animals.indexOf(animal);
           this.animals.splice(animalIndex, 1)
+      },
+      moveToTop(animal) {
+          let animalIndex = this.animals.indexOf(animal);
+          this.animals.splice(animalIndex, 1)
+          this.animals.splice(0, 0, animal)
       }
   }
 }
