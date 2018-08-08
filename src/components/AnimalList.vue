@@ -11,16 +11,13 @@
         <br>
          <label>Datum rodjenja: </label><br>
         <input type="text" v-model='newAnimal.datum_rodjenja'>
+        <br>     
         <br>
-
-        <br>
-        <select v-model="newAnimal.sector">
-       
-        <option disabled value="">Please select one sector</option>
-              <option v-for='(sector, index) in sectors' :key='index' v-bind:value='sector'>{{sector.name}}</option>
-  
+        <select v-model="newAnimal.sector" v-bind:value=null>
+          <option v-for='(sector, index) in sectors' :key='index' v-bind:value='sector'>{{sector.name}}</option>
         </select>
-
+        <br>
+        <br>
         <button @click='addAnimal'>Add Animal</button>
     </form>
 
@@ -62,119 +59,116 @@
 </template>
 
 <script>
- const sectors = [
-            {name:'kavez'},
-            {name:'bazen'},
-            {name:'livada'}
-        ]
+const sectors = [{ name: "kavez" }, { name: "bazen" }, { name: "livada" }];
 
 export default {
-  name: 'AnimalList',  
+  name: "AnimalList",
   data() {
-
     return {
-    
-    sectors: sectors,
+      sectors: sectors,
 
-        animals: [
-            {
-                vrsta:'predator',
-                ime: 'Tigar',
-                datum_rodjenja: '', 
-                sector: sectors[0],
-                background: true,
-                            
-            },
-            {
-                vrsta:'predator',
-                ime: 'Panter',
-                datum_rodjenja: '5. jun 2005',
-                sector: sectors[0],
-                background: true,
-            },
-            {
-                vrsta:'zver',
-                ime: 'Medved',
-                datum_rodjenja: '15. april 1995',
-                sector: sectors[0],
-                background: false,
-            },
-            {
-                vrsta:'vodozemci',
-                ime: 'Foka',
-                datum_rodjenja: '',
-                sector: sectors[1],
-                background: true,
-            },
-            {
-                vrsta:'papkar',
-                ime: 'Kamila',
-                datum_rodjenja: '3. maj 2000',  
-                sector: sectors[2],
-                background: true,
-            },
-        ],  
-        newAnimal: {},
-    
-    }
+      animals: [
+        {
+          vrsta: "predator",
+          ime: "Tigar",
+          datum_rodjenja: "",
+          sector: sectors[0],
+          background: true
+        },
+        {
+          vrsta: "predator",
+          ime: "Panter",
+          datum_rodjenja: "5. jun 2005",
+          sector: sectors[0],
+          background: true
+        },
+        {
+          vrsta: "zver",
+          ime: "Medved",
+          datum_rodjenja: "15. april 1995",
+          sector: sectors[0],
+          background: false
+        },
+        {
+          vrsta: "vodozemci",
+          ime: "Foka",
+          datum_rodjenja: "",
+          sector: sectors[1],
+          background: true
+        },
+        {
+          vrsta: "papkar",
+          ime: "Kamila",
+          datum_rodjenja: "3. maj 2000",
+          sector: sectors[2],
+          background: true
+        }
+      ],
+      newAnimal: {
+        background: true
+      }
+    };
   },
 
   methods: {
-      removeAnimal(animal) {
-          let animalIndex = this.animals.indexOf(animal);
-          this.animals.splice(animalIndex, 1)
-      },
-      moveToTop(animal) {
-
-          this.removeAnimal(animal)
-          this.animals.unshift(animal)
-      },
-      addAnimal() {
-        
-          this.animals.push(this.newAnimal);
-          this.newAnimal = {};
-
-      },
-      showAnimals(sector) {
-          var list = [];
-          this.animals.forEach(animal => {
-              if(animal.sector === sector){
-                  list.push(animal.ime);
-              }
-          });
-          alert(list);
-      },
-
-      isActive(animal) {
-         return  animal.background;
-      },
-
-      toggle(animal) {
-          animal.background = !animal.background;
+    removeAnimal(animal) {
+      let animalIndex = this.animals.indexOf(animal);
+      this.animals.splice(animalIndex, 1);
+    },
+    moveToTop(animal) {
+      this.removeAnimal(animal);
+      this.animals.unshift(animal);
+    },
+    addAnimal() {
+      //if sector is not selected add sector object to newAnimal with value "nepoznato"
+      if (!this.newAnimal.sector) {
+        this.newAnimal.sector = { name: "Nepoznato" };
       }
+      this.animals.push(this.newAnimal);
+      this.newAnimal = {
+        background: true
+      };
+    },
+    showAnimals(sector) {
+      var list = [];
+      this.animals.forEach(animal => {
+        if (animal.sector === sector) {
+          list.push(`${animal.ime} ${animal.vrsta}`);
+        }
+      });
+      alert(list);
+    },
+
+    isActive(animal) {
+      return animal.background;
+    },
+
+    toggle(animal) {
+      animal.background = !animal.background;
+    }
   }
-}
+};
 </script>
 
 
 <style scoped>
 table {
-    margin: 0 auto;
+  margin: 0 auto;
 }
-th, td {
-    padding: 15px;
-    text-align: left;
+th,
+td {
+  padding: 15px;
+  text-align: left;
 }
 
 input {
-    width: 60%;
-    padding: 12px 10px;
-    margin: 8px 0;
-    box-sizing: border-box;
+  width: 60%;
+  padding: 12px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
 }
 
 .backgroundColor {
-    background: lightgreen;
+  background: lightgreen;
 }
-
 </style>
